@@ -20,57 +20,67 @@ function computerPlay() {
   return computerSelection;
 }
 
-function checkForValidInput(playerSelection) {
-  playerSelection = playerSelection.toLowerCase();
-  switch (playerSelection) {
+function checkForValidInput(userInput) {
+  userInput = userInput.toLowerCase();
+  switch (userInput) {
     case 'rock':
     case 'paper':
     case 'scissors':
-      return true; // the input is valid
+      return true; // the userInput is valid
       break;
     default:
-      return false; // the input is invalid
+      return false; // the userInput is invalid
   };
 }
 
 function playRound(playerSelection, computerSelection) {
-  let winner = [playerSelection, computerSelection];
+  let roundInfo = {
+    playerSelection: playerSelection,
+    computerSelection: computerSelection,
+    winner: '',
+  };
   if (playerSelection == computerSelection) {
-    winner = [...winner, 'Even'];
+    roundInfo.winner = 'Even';
   } else {
-    if (playerSelection === 'Rock') {
-      if (computerSelection === 'Paper') {
-        winner = [...winner, 'Computer'];
+    if (playerSelection == 'Rock') {
+      if (computerSelection == 'Paper') {
+        roundInfo.winner = 'Computer';
       }
-      else if (computerSelection === 'Scissors') {
-        winner = [...winner, 'Player'];
-      }
-    }
-    else if (playerSelection === 'Paper') {
-      if (computerSelection === 'Rock') {
-        winner = [...winner, 'Player'];
-      }
-      else if (computerSelection === 'Scissors') {
-        winner = [...winner, 'Computer'];
+      else if (computerSelection == 'Scissors') {
+        roundInfo.winner = 'Player';
       }
     }
-    else if (playerSelection === 'Scissors') {
-      if (computerSelection === 'Rock') {
-        winner = [...winner, 'Computer'];
+    else if (playerSelection == 'Paper') {
+      if (computerSelection == 'Rock') {
+        roundInfo.winner = 'Player';
       }
-      else if (computerSelection === 'Paper') {
-        winner = [...winner, 'Player'];
+      else if (computerSelection == 'Scissors') {
+        roundInfo.winner = 'Computer';
+      }
+    }
+    else if (playerSelection == 'Scissors') {
+      if (computerSelection == 'Rock') {
+        roundInfo.winner = 'Computer';
+      }
+      else if (computerSelection == 'Paper') {
+        roundInfo.winner = 'Player';
       }
     }
   }
-  // if (winner == computerSelection) {
-  //   return `You Lose! ${computerSelection} beats ${playerSelection}!`;
-  // } else if (winner == playerSelection) {
-  //   return `You Win! ${playerSelection} beats ${computerSelection}!`;
-  // } else {
-  //   return `No one Win! ${playerSelection} is equal to ${computerSelection}!`
-  // }
-  return winner;
+  return roundInfo;
+};
+
+function askToReplay() {
+  let replayChoice = prompt(`Do you want to play another time? Type 'yes' or 'no'`);
+  while (replayChoice != 'yes' && replayChoice != 'no') {
+    alert(`I don't understand what you mean with ${replayChoice}`);
+    replayChoice = prompt(`Do you want to play another time? Type 'yes' or 'no'`);
+  } 
+  if (replayChoice === 'yes') {
+    game();
+  } else if (replayChoice === 'no') {
+    alert('Thanks for playing! Bye!');
+  }
 };
 
 function game() {
@@ -78,28 +88,21 @@ function game() {
   let computerCounter = 0;
   for (i = 0; i < 5; i++) {
     let userInput = prompt('Rock, Paper or Scissors?');
-    while (checkForValidInput(userInput) === false) {
+    while (checkForValidInput(userInput) == false) {
       userInput = prompt('Your selection is invalid! Retry!')
     }
-    userInput = userInput[0].toUpperCase() + userInput.slice(1); // Format the input - capitalize the first letter
-    // let roundWinner = playRound(userInput, computerPlay());
-    // console.log(roundWinner);
-    // if (roundWinner[4] === 'L') {
-    //   computerCounter += 1;
-    // } else if (roundWinner[4] === 'W') {
-    //   playerCounter += 1;
-    // }
-    let roundWinner = playRound(userInput, computerPlay());
-    if (roundWinner[2] == 'Computer') {
+    userInput = userInput[0].toUpperCase() + userInput.toLowerCase().slice(1); // Format the input - capitalize the first letter
+    let roundInfo = playRound(userInput, computerPlay());
+    if (roundInfo.winner == 'Computer') {
       computerCounter += 1;
-      console.log(`You Lose! ${roundWinner[1]} beats ${roundWinner[0]}!`)
+      console.log(`You Lose! ${roundInfo.computerSelection} beats ${roundInfo.playerSelection}!`)
     }
-    else if (roundWinner[2] == 'Player') {
+    else if (roundInfo.winner == 'Player') {
       playerCounter += 1;
-      console.log(`You Win! ${roundWinner[0]} beats ${roundWinner[1]}!`)
+      console.log(`You Win! ${roundInfo.playerSelection} beats ${roundInfo.computerSelection}!`)
     } 
     else {
-      console.log(`No one Win! ${roundWinner[0]} is equal to ${roundWinner[1]}!`)
+      console.log(`No one Win! ${roundInfo.playerSelection} is equal to ${roundInfo.computerSelection}!`)
     }
   }
   if (computerCounter > playerCounter) {
@@ -109,6 +112,7 @@ function game() {
   } else {
     console.log(`The final result is even!`)
   }
+  askToReplay();
 }
 
 game();
