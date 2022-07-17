@@ -34,38 +34,33 @@ function checkForValidInput(playerSelection) {
 }
 
 function playRound(playerSelection, computerSelection) {
-  let winner;
-  if (playerSelection === 'Rock') {
-    if (computerSelection === 'Paper') {
-      winner = computerSelection;
+  let winner = [playerSelection, computerSelection];
+  if (playerSelection == computerSelection) {
+    winner = [...winner, 'Even'];
+  } else {
+    if (playerSelection === 'Rock') {
+      if (computerSelection === 'Paper') {
+        winner = [...winner, 'Computer'];
+      }
+      else if (computerSelection === 'Scissors') {
+        winner = [...winner, 'Player'];
+      }
     }
-    else if (computerSelection === 'Scissors') {
-      winner = playerSelection;
+    else if (playerSelection === 'Paper') {
+      if (computerSelection === 'Rock') {
+        winner = [...winner, 'Player'];
+      }
+      else if (computerSelection === 'Scissors') {
+        winner = [...winner, 'Computer'];
+      }
     }
-    else {
-      winner = 'Even';
-    }
-  }
-  else if (playerSelection === 'Paper') {
-    if (computerSelection === 'Rock') {
-      winner = playerSelection;
-    }
-    else if (computerSelection === 'Scissors') {
-      winner = computerSelection;
-    }
-    else {
-      winner = 'Even';
-    }
-  }
-  else if (playerSelection === 'Scissors') {
-    if (computerSelection === 'Rock') {
-      winner = computerSelection;
-    }
-    else if (computerSelection === 'Paper') {
-      winner = playerSelection;
-    }
-    else {
-      winner = 'Even';
+    else if (playerSelection === 'Scissors') {
+      if (computerSelection === 'Rock') {
+        winner = [...winner, 'Computer'];
+      }
+      else if (computerSelection === 'Paper') {
+        winner = [...winner, 'Player'];
+      }
     }
   }
   // if (winner == computerSelection) {
@@ -75,7 +70,7 @@ function playRound(playerSelection, computerSelection) {
   // } else {
   //   return `No one Win! ${playerSelection} is equal to ${computerSelection}!`
   // }
-  return winner; 
+  return winner;
 };
 
 function game() {
@@ -87,12 +82,24 @@ function game() {
       userInput = prompt('Your selection is invalid! Retry!')
     }
     userInput = userInput[0].toUpperCase() + userInput.slice(1); // Format the input - capitalize the first letter
+    // let roundWinner = playRound(userInput, computerPlay());
+    // console.log(roundWinner);
+    // if (roundWinner[4] === 'L') {
+    //   computerCounter += 1;
+    // } else if (roundWinner[4] === 'W') {
+    //   playerCounter += 1;
+    // }
     let roundWinner = playRound(userInput, computerPlay());
-    console.log(roundWinner);
-    if (roundWinner[4] === 'L') {
+    if (roundWinner[2] == 'Computer') {
       computerCounter += 1;
-    } else if (roundWinner[4] === 'W') {
+      console.log(`You Lose! ${roundWinner[1]} beats ${roundWinner[0]}!`)
+    }
+    else if (roundWinner[2] == 'Player') {
       playerCounter += 1;
+      console.log(`You Win! ${roundWinner[0]} beats ${roundWinner[1]}!`)
+    } 
+    else {
+      console.log(`No one Win! ${roundWinner[0]} is equal to ${roundWinner[1]}!`)
     }
   }
   if (computerCounter > playerCounter) {
