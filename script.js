@@ -1,9 +1,9 @@
-function getRandomNumber(min = 0, max = 2) {
-  const num = Math.floor(Math.random() * (max - min + 1)) + min;
+const getRandomNumber = (min = 0, max = 2) => {
+  const num = Math.floor(Math.random() * (max - min + 1));
   return num;
 }
 
-function computerPlay() {
+const computerPlay = () => {
   let randomNumber = getRandomNumber();
   let computerSelection; 
   switch (randomNumber) {
@@ -20,7 +20,7 @@ function computerPlay() {
   return computerSelection;
 }
 
-function checkForValidInput(userInput) {
+const checkForValidInput = (userInput) => {
   userInput = userInput.toLowerCase();
   switch (userInput) {
     case 'rock':
@@ -33,7 +33,7 @@ function checkForValidInput(userInput) {
   };
 }
 
-function playRound(playerSelection, computerSelection) {
+const playRound = (playerSelection, computerSelection) => {
   let roundInfo = {
     playerSelection: playerSelection,
     computerSelection: computerSelection,
@@ -45,24 +45,19 @@ function playRound(playerSelection, computerSelection) {
     if (playerSelection == 'Rock') {
       if (computerSelection == 'Paper') {
         roundInfo.winner = 'Computer';
-      }
-      else if (computerSelection == 'Scissors') {
+      } else if (computerSelection == 'Scissors') {
         roundInfo.winner = 'Player';
       }
-    }
-    else if (playerSelection == 'Paper') {
+    } else if (playerSelection == 'Paper') {
       if (computerSelection == 'Rock') {
         roundInfo.winner = 'Player';
-      }
-      else if (computerSelection == 'Scissors') {
+      } else if (computerSelection == 'Scissors') {
         roundInfo.winner = 'Computer';
       }
-    }
-    else if (playerSelection == 'Scissors') {
+    } else if (playerSelection == 'Scissors') {
       if (computerSelection == 'Rock') {
         roundInfo.winner = 'Computer';
-      }
-      else if (computerSelection == 'Paper') {
+      } else if (computerSelection == 'Paper') {
         roundInfo.winner = 'Player';
       }
     }
@@ -70,38 +65,36 @@ function playRound(playerSelection, computerSelection) {
   return roundInfo;
 };
 
-function askToReplay() {
+const askToReplay = () => {
   let replayChoice = prompt(`Do you want to play another time? Type 'yes' or 'no'`);
-  while (replayChoice != 'yes' && replayChoice != 'no') {
+  while (replayChoice.toLowerCase() != 'yes' && replayChoice.toLowerCase() != 'no') {
     alert(`I don't understand what you mean with ${replayChoice}`);
     replayChoice = prompt(`Do you want to play another time? Type 'yes' or 'no'`);
   } 
-  if (replayChoice === 'yes') {
+  if (replayChoice.toLowerCase() === 'yes') {
     game();
-  } else if (replayChoice === 'no') {
+  } else {
     alert('Thanks for playing! Bye!');
   }
 };
 
-function game() {
+const game = () => {
   let playerCounter = 0;
   let computerCounter = 0;
   for (i = 0; i < 5; i++) {
     let userInput = prompt('Rock, Paper or Scissors?');
     while (checkForValidInput(userInput) == false) {
       userInput = prompt('Your selection is invalid! Retry!')
-    }
+    };
     userInput = userInput[0].toUpperCase() + userInput.toLowerCase().slice(1); // Format the input - capitalize the first letter
     let roundInfo = playRound(userInput, computerPlay());
     if (roundInfo.winner == 'Computer') {
       computerCounter += 1;
       console.log(`You Lose! ${roundInfo.computerSelection} beats ${roundInfo.playerSelection}!`)
-    }
-    else if (roundInfo.winner == 'Player') {
+    } else if (roundInfo.winner == 'Player') {
       playerCounter += 1;
       console.log(`You Win! ${roundInfo.playerSelection} beats ${roundInfo.computerSelection}!`)
-    } 
-    else {
+    } else {
       console.log(`No one Win! ${roundInfo.playerSelection} is equal to ${roundInfo.computerSelection}!`)
     }
   }
@@ -111,7 +104,7 @@ function game() {
     console.log(`Congratulation! You beat the Computer ${playerCounter} to ${computerCounter}!`)
   } else {
     console.log(`The final result is even!`)
-  }
+  };
   askToReplay();
 }
 
